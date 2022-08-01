@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+.App {
+  width: 100vw;
+  height: 100vw;
+  background-color: #faf9fb;
+}
+
+.App::-webkit-scrollbar {
+  display: none;
+}
+
+/* Header styles */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+  width: 100%;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 101;
+  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  min-width: 40px;
+  width: 50px;
+}
+
+.inputBox {
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 8px 15px;
+  width: 120px;
+}
+
+.inputBox .searchIcon {
+  color: #787a84;
+  font-size: 20px;
+}
+
+.inputBox input {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: #787a84;
+  padding-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.shoppingCart {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.shoppingCart .cart {
+  font-size: 30px;
+  color: #373848;
+}
+
+.shoppingCart .cart_content {
+  width: 20px;
+  height: 20px;
+  background-color: #f8901c;
+  border-radius: 100%;
+  min-width: 20px;
+  min-height: 20px;
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shoppingCart .cart_content p {
+  font-weight: 500;
+  color: #faf9fb;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+}
+
+.profileContainer .imgbox {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 100vw;
+  background-color: #373848;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profileContainer .imgbox .profilePic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileContainer .userName {
+  font-size: 16px;
+  margin-left: 8px;
+  font-weight: 500;
+  display: none;
+  align-items: center;
+}
+
+.toggleMenu {
+  transform: rotate(90deg);
+}
+
+.toggleMenu .toggleIcon {
+  color: #373848;
+  font-size: 30px;
+}
+@media screen and (max-width: 992px) {
+  .toggleMenu {
+    display: none;
+  }
+}
+
+/* Header styles end */
+
+/* bottom menu */
+
+.bottomMenu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  background: #d5d5d5;
+  border-radius: 25px 25px 0 0;
+  z-index: 101;
+}
+
+.bottomMenu ul {
+  display: flex;
+}
+
+.bottomMenu ul li {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  z-index: 1;
+}
+
+.bottomMenu ul li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+  text-align: center;
+  font-weight: 500;
+}
+
+.bottomMenu ul li a .Icon {
+  position: relative;
+  display: block;
+  line-height: 70px;
+  text-align: center;
+  transition: 0.5s;
+}
+
+.bottomMenu ul li a .Icon .MuiSvgIcon-root {
+  font-size: 26px;
+  color: #373848;
+}
+
+.bottomMenu ul li:hover a .Icon {
+  transform: translateY(-26px);
+}
+.bottomMenu ul li:active a .Icon .MuiSvgIcon-root {
+  color: #faf9fb;
+  transition: 0.5s;
+}
+
+.indicator {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  background-color: #f8901c;
+  border-radius: 100vw;
+  top: -50%;
+  border: 6px solid #faf9fb;
+  transition: 0.5s;
+}
+
+.indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border-top-right-radius: 18px;
+  box-shadow: 0px -10px 0 0 #faf9fb;
+}
+
+.indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border-top-left-radius: 18px;
+  box-shadow: 0px -10px 0 0 #faf9fb;
+}
+
+.bottomMenu ul li:nth-child(1).active ~ .indicator {
+  transform: translateX(calc(60px * 0));
+}
+.bottomMenu ul li:nth-child(2).active ~ .indicator {
+  transform: translateX(calc(60px * 1));
+}
+.bottomMenu ul li:nth-child(3).active ~ .indicator {
+  transform: translateX(calc(60px * 2));
+}
+.bottomMenu ul li:nth-child(4).active ~ .indicator {
+  transform: translateX(calc(60px * 3));
+}
+.bottomMenu ul li:nth-child(5).active ~ .indicator {
+  transform: translateX(calc(60px * 4));
+}
+.bottomMenu ul li:nth-child(6).active ~ .indicator {
+  transform: translateX(calc(60px * 5));
+}
+
+@media screen and (min-width: 992px) {
+  .bottomMenu {
+    display: none;
+  }
+}
+
+/* botttom menu end */
+
+/* main section syles */
+
+main {
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+}
+main .mainContainer {
+  position: relative;
+}
+main .mainContainer .bannerContainer {
+  background-color: #373848;
+  width: 100vw;
+  height: 40vh;
+  position: relative;
+}
+
+main .mainContainer .bannerContainer .banner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+main .mainContainer .bannerContainer .bannerSlogan {
+  position: absolute;
+  z-index: 102px;
+  top: 30%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+main .mainContainer .bannerContainer .bannerSlogan .mainSlogan{
+    color: #292D32;
+    font-size: 50px;
+    font-family: 'Lobster', cursive;
+}
+
+main .mainContainer .bannerContainer .searchLocation {
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    position: absolute;
+    align-items: center;
+    top: 60%;
+    overflow: hidden;
+    padding: 8px 15px;
+    width: 100%;
+}
+main .mainContainer .bannerContainer .searchLocation input{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 5px 0 0;
+    outline: none;
+    border: none;
+    background-color: white;
+}
+
+main .mainContainer .bannerContainer .searchLocation select{
+    width: 50%;
+    justify-content: space-between;
+    outline: none;
+    border: none;
+    background-color: white;
+    display: inline-block;
+    font: inherit;
+    line-height: 1.5em;
+    padding: 0.5em 3.5em 0.5em 1em;
+  
+    /* reset */
+  
+    margin: 0;      
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+main .mainContainer .bannerContainer .searchLocation .minimal {
+    background-image:
+      linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%),
+      linear-gradient(to right, #ccc, #ccc);
+    background-position:
+      calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px),
+      calc(100% - 2.5em) 0.5em;
+    background-size:
+      5px 5px,
+      5px 5px,
+      1px 1.5em;
+    background-repeat: no-repeat;
+  }
+  
+  main .mainContainer .bannerContainer .searchLocation .minimal:focus {
+    background-image:
+      linear-gradient(45deg, green 50%, transparent 50%),
+      linear-gradient(135deg, transparent 50%, green 50%),
+      linear-gradient(to right, #ccc, #ccc);
+    background-position:
+      calc(100% - 15px) 1em,
+      calc(100% - 20px) 1em,
+      calc(100% - 2.5em) 0.5em;
+    background-size:
+      5px 5px,
+      5px 5px,
+      1px 1.5em;
+    background-repeat: no-repeat;
+    border-color: green;
+    outline: 0;
+  }
+  
+  
+  main .mainContainer .bannerContainer .searchLocation select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+  }
+
+  main .topHotelHeading {
+    margin-top: 14px;
+  }
+  main .topHotelHeading h1 {
+    font-size: 20px;
+    margin-left: 15px;
+  }
+  main .topHotelHeading hr {
+    width: 80vw;
+    font-weight: 800;
+    margin:8px auto;
+  }
+
+  main .HotelContainer {
+    width: 90%;
+    border-radius: 15px;
+    margin: auto;
+    margin-top: 8px;
+    height: 300px;
+    background-color: #e6e7f7;
+    display: block;
+    overflow: none;
+  }
+  main .HotelContainer .imgBox {
+    width: 100%;
+    height: 60%;
+    border-radius: 15px 15px 0px 0px;
+    margin: auto;
+    margin-top: 8px;
+    height: 200px;
+    background-color: #1b1b23;
+  }
+
+
+
+/* main section syles end*/

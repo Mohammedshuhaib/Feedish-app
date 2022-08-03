@@ -9,16 +9,26 @@ import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import { gapi } from 'gapi-script'
+import{ GOOGLE_CLIENT_ID } from '../../config'
+
 function Signup(props) {
-    const [cookies, setCookies] = useCookies()
-    const [open, setOpen] = React.useState(true);
-    const [signupData , setSignupData] = useState(
-        cookies.signupData ? cookies.signupData : null
-    )
-    const handleClose = () => {
-      setOpen(false);
-      props.onChange()
-    };
+  gapi.load("client:auth2", () => {
+    gapi.client.init({
+      clientId:
+        GOOGLE_CLIENT_ID,
+      plugin_name: "chat",
+    });
+  });
+  const [cookies, setCookies] = useCookies()
+  const [open, setOpen] = React.useState(true);
+  const [signupData , setSignupData] = useState(
+      cookies.signupData ? cookies.signupData : null
+  )
+  const handleClose = () => {
+    setOpen(false);
+    props.onChange()
+  };
 
     const handleFailure= (result) => {
         console.log(result)
@@ -27,15 +37,24 @@ function Signup(props) {
     const handleLogin = async (googleData) => {
        const res = await axios({
         method:'post',
-        url:'http://localhost:3000/google_signup',
+        url:'http://localhost:2000/google_signup',
         data:{
             token:googleData.tokenId
         }
        })
        console.log(res)
        setSignupData(res)
+       if(res) {
+        handleClose()
+       }
        setCookies('signupData',res, {path:'/'})
     }
+
+    // useEffect(() => {
+    //   if(cookies.signupData) {
+        
+    //   }
+    // },[])
   return (
     <div>
     <Dialog className='FormContaier' open={open} maxWidth={'xs'} onClose={handleClose}>
@@ -71,23 +90,14 @@ function Signup(props) {
         <div className="orContainer">
             <p>or</p>
         </div>
-        <div className="googleSignup">
-            {
-               signupData ? (
-                props.setUserLogin(true)
-               )
-               :
-               (
+        <div className="googleSignup">   
                 <GoogleLogin
-                clientId = {'clind id'}
+                clientId = {GOOGLE_CLIENT_ID}
                 buttonText = 'Signup with Google'
                 onSuccess = {handleLogin}
                 onFailure = {handleFailure}
                 cookiePolicy='single_host_origin'>  
                 </GoogleLogin>
-               )
-            }
-           
         </div>
       </DialogContent>
       <DialogActions>

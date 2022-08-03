@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { ShoppingCartRounded } from '@mui/icons-material';
+import {  ShoppingCartRounded } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import Login from '../Login/Login'
 import Signup from '../Signup/SignupModal';
 
 function Header() {
   let [userLogin, setUserLogin] = useState(false);
   const [showModal , setShowModal] = useState(false)
+  const [showLoginModal , setShowLoginModal] = useState(false)
 
-  let handleClose = () => setShowModal(false) 
+  let handleClose = () => setShowModal(false)
+  let handleCloseLogin = () => setShowLoginModal(false)  
   return (
     <header>
       <img
@@ -26,7 +29,7 @@ function Header() {
 
       {userLogin === false && (
         <div className="loginButton">
-          <Button variant="contained">Login</Button>
+          <Button onClick={() => setShowLoginModal(true)} variant="contained">Login</Button>
         </div>
       )}
       {userLogin === false && (
@@ -60,6 +63,7 @@ function Header() {
         <h2 className="userName">Mohammed shuhaib</h2>
       </div>
      {showModal && <Signup onChange={handleClose} setUserLogin={setUserLogin}/> }
+     {showLoginModal && <Login onChange={handleCloseLogin} setUserLogin={setUserLogin}/> }
     </header>
   );
 }

@@ -4,7 +4,10 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema(
   {
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    mobileNumber: { type: Number },
+    email: { type: String, required: true },
+    picture: { type: String, required: true }
   },
   { collection: 'userData' }
 )

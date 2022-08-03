@@ -79,7 +79,7 @@ function Signup(props) {
                :
                (
                 <GoogleLogin
-                clientId = {'1098827480635-579qqn6hu6bguptra87qbqlt6bearsk5.apps.googleusercontent.com'}
+                clientId = {'clind id'}
                 buttonText = 'Signup with Google'
                 onSuccess = {handleLogin}
                 onFailure = {handleFailure}

@@ -1,0 +1,21 @@
+
+
+.FormContaier .inputField {
+    margin-top: 10px;
+}
+
+.FormContaier .signupButton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.FormContaier .signupButton Button {
+    width: 100%;
+}
+
+.FormContaier .orContainer {
+    justify-content: center;
+    display: flex;
+    margin-top: 10px;
+}

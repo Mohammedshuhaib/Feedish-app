@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import-normalize;
 .App {
   width: 100vw;
   height: 100vw;
@@ -30,40 +31,14 @@ header {
   width: 50px;
 }
 
-.inputBox {
-  background-color: #fff;
-  border-radius: 25px;
-  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  padding: 8px 15px;
-  width: 120px;
-}
-
-.inputBox .searchIcon {
-  color: #787a84;
-  font-size: 20px;
-}
-
-.inputBox input {
-  width: 100%;
-  height: 100%;
-  outline: none;
-  border: none;
-  background: transparent;
-  color: #787a84;
-  padding-left: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 .shoppingCart {
   position: relative;
   width: 30px;
   height: 30px;
   display: flex;
   justify-content: center;
+  margin-left: auto;
+  margin-right:15px ;
 }
 
 .shoppingCart .cart {
@@ -122,18 +97,86 @@ header {
   align-items: center;
 }
 
-.toggleMenu {
-  transform: rotate(90deg);
-}
 
-.toggleMenu .toggleIcon {
-  color: #373848;
-  font-size: 30px;
-}
-@media screen and (max-width: 992px) {
-  .toggleMenu {
+@media  (min-width: 902px) {
+  .shoppingCart {
+    margin-right: 50px;
+  }
+  .loginButton{
+
+    margin-right: 13px;
+  }
+  .signupButton {
+
+  }
+  .profileContainerSmall{
     display: none;
   }
+}
+
+@media screen and (max-width: 992px) {
+  .loginButton {
+    display: none;
+  }
+  .signupButton{
+    display: none;
+  }
+  .profileContainer{
+    display: none;
+  }
+  
+.profileContainerSmall {
+  display: flex;
+  align-items: center;
+}
+
+.profileContainerSmall .imgbox {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 100vw;
+  background-color: #373848;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profileContainerSmall .imgbox .profilePic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileContainerSmall .userName {
+  font-size: 16px;
+  margin-left: 8px;
+  font-weight: 500;
+  display: none;
+  align-items: center;
+}
+}
+.backdrop{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000000e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  width: clamp(50% , 700px , 90%);
+  height: min(50%, 300px);
+  margin: auto;
+  padding: 0 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Header styles end */
@@ -247,9 +290,6 @@ header {
 .bottomMenu ul li:nth-child(5).active ~ .indicator {
   transform: translateX(calc(60px * 4));
 }
-.bottomMenu ul li:nth-child(6).active ~ .indicator {
-  transform: translateX(calc(60px * 5));
-}
 
 @media screen and (min-width: 992px) {
   .bottomMenu {
@@ -271,9 +311,45 @@ main .mainContainer {
 }
 main .mainContainer .bannerContainer {
   background-color: #373848;
-  width: 100vw;
-  height: 40vh;
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
   position: relative;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width:902px) {
+  main .mainContainer .bannerContainer {
+    height: 100vh;
+  }
+
+  main .mainContainer .bannerContainer .bannerSlogan .mainSlogan {
+    font-size: 90px !important;
+  }
+  .bannerSlogan .subSlogan {
+    font-size: 30px;
+  }
+
+  .bannerContainer .searchLocation {
+    width: 50% !important;
+  }
+  
+  main .topHotelHeading {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+  }
+
+  main .topHotelHeading h1 {
+    font-size: 50px !important;
+  }
+
+  main .topHotelHeading hr {
+    display: none;
+  }
 }
 
 main .mainContainer .bannerContainer .banner {
@@ -294,7 +370,11 @@ main .mainContainer .bannerContainer .bannerSlogan {
 main .mainContainer .bannerContainer .bannerSlogan .mainSlogan{
     color: #292D32;
     font-size: 50px;
-    font-family: 'Lobster', cursive;
+    font-family: 'Bree Serif', serif;
+}
+
+.bannerSlogan .subSlogan {
+  color: #4E1C1C;
 }
 
 main .mainContainer .bannerContainer .searchLocation {
@@ -392,25 +472,117 @@ main .mainContainer .bannerContainer .searchLocation .minimal {
     margin:8px auto;
   }
 
-  main .HotelContainer {
-    width: 90%;
-    border-radius: 15px;
-    margin: auto;
-    margin-top: 8px;
-    height: 300px;
-    background-color: #e6e7f7;
-    display: block;
-    overflow: none;
+  main .slide-container .slide-content .card-wrapper .card .image-content .card-image {
+    position: relative;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-color: #fff;
+    padding: 3px;
   }
-  main .HotelContainer .imgBox {
+
+  main .slide-container .slide-content .card-wrapper .card {
+    border-radius: 25px;
+    background-color: #fff;
+    width: 320px;
+  }
+
+  main .slide-container .slide-content .card-wrapper .card .image-content, .card-content {
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 14px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+  }
+
+
+  main .slide-container .slide-content .card-wrapper .card .image-content .card-image img {
+    height: 100%;
     width: 100%;
-    height: 60%;
-    border-radius: 15px 15px 0px 0px;
-    margin: auto;
-    margin-top: 8px;
-    height: 200px;
-    background-color: #1b1b23;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 40x solid #4E1C1C;
+    
   }
+
+  .card .image-content {
+    position: relative;
+    row-gap: 5px;
+    padding:25px 0 ;
+
+  }
+
+  .image-content .overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #4E1C1C;
+    border-radius: 25px 25px 0 25px;
+  }
+
+  .image-content .overlay::before,
+  .image-content .overlay::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    height: 40px;
+    width: 40px;
+    background-color: #4E1C1C;
+    border-color: #fff;
+  }
+  .image-content .overlay::after{
+    border-radius: 0 25px 0 0;
+    border-color: #fff;
+    background-color: rgb(255, 255, 255)
+  }
+  main .slide-container {
+    justify-content: center;
+    display: flex;
+    margin: 0 20px;
+  }
+
+  main .slide-container .slide-content .card-wrapper .card .card-content .name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+  }
+  main .slide-container .slide-content .card-wrapper .card .card-content .name .rating {
+    font-size: 14px;
+    color: #707070;
+  }
+ .card-content .rating .MuiSvgIcon-root{
+    font-size: 13px;
+    margin-top: 13px;
+    text-align: center;
+    color: #707070;
+  }
+
+  .card-content button {
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    padding: 8px 16px;
+    background-color: #4E1C1C;
+    border-radius: 6px;
+    margin: 14px;
+    cursor: pointer;
+    transition: all 0.3;
+  }
+
+  .card-content button:hover {
+    background-color: #4E1C1C;
+  }
+
+
+
+
+
+
 
 
 

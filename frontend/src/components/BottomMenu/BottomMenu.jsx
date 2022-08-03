@@ -1,8 +1,10 @@
 import { AccountBalanceWalletRounded, Chat, Favorite, HomeRounded, Settings, SummarizeRounded } from '@mui/icons-material'
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import MenuContainer from './MenuContainer'
 
 function BottomMenu() {
+  let navigate = useNavigate()
     useEffect(() => {
         const menuLi = document.querySelectorAll('#menu li')
 
@@ -16,7 +18,7 @@ function BottomMenu() {
     <div className='bottomMenu'>
         <ul id='menu'>
             {/* prettier-ignore */}
-            <MenuContainer link={'#'} icon = {<HomeRounded/>}/>
+            <MenuContainer link={'/'} icon = {<HomeRounded/>}/>
             {/* prettier-ignore */}
             <MenuContainer link={'#'} icon = {<Chat/>}/>
             {/* prettier-ignore */}
@@ -25,8 +27,6 @@ function BottomMenu() {
             <MenuContainer link={'#'} icon = {<Favorite/>}/>
             {/* prettier-ignore */}
             <MenuContainer link={'#'} icon = {<SummarizeRounded/>}/>
-            {/* prettier-ignore */}
-            <MenuContainer link={'#'} icon = {<Settings/>}/>
             
             <div className='indicator'></div>
         </ul>

@@ -20,7 +20,7 @@ function Header() {
       />
        
         <div className="shoppingCart">
-          <ShoppingCartRounded className="cart" />
+          <ShoppingCartRounded className>
           <div className="cart_content">
             <p>2</p>
           </div>

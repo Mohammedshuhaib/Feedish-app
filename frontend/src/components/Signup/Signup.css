@@ -2,6 +2,7 @@
 
 .FormContaier .inputField {
     margin-top: 10px;
+    width: 400px;
 }
 
 .FormContaier .signupButton {
@@ -18,4 +19,34 @@
     justify-content: center;
     display: flex;
     margin-top: 10px;
+}
+
+.FormContaier .googleSignup .googleButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.FormContaier .goToGoogle{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+
+}
+
+.FormContaier .goToGoogle p{
+    color: blue;
+}
+
+.FormContaier .goToGoogle p span{
+    cursor: pointer;
+}
+
+.FormContaier .goToGoogle p span:hover{
+    color: red;
+}
+
+.errorMessage {
+    font-size: 15px;
+    color: red;
 }

@@ -12,21 +12,25 @@ router.get('/', (req, res) => {
 
 let users = []
 
-
 router.post('/google_signup', async (req, res) => {
-  const { token } = req.body
+  try {
+    const { token } = req.body
 
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience: process.env.GOOGLE_CLIENT_ID
-  })
-  const { name, email, picture } = ticket.getPayload()
-  users = {name, email, picture}
-  await User.create({...users})
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    })
+    const { name, email, picture } = ticket.getPayload()
+    users = { name, email, picture }
+    await User.create({ ...users })
 
-  res.status(201)
+    res.status(201)
 
-  res.json({ name, email, picture })
+    res.json({ name, email, picture, userLogin: true })
+  } catch (err) {
+    res.status(200)
+    res.json({ userLogin: true })
+  }
 })
 
 module.exports = router

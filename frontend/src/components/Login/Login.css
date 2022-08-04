@@ -1,0 +1,12 @@
+.emailLogin{
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    border-style: outset;
+    margin-bottom: 3px;
+}
+
+.emailLogin .emailLoginText {
+    color: rgb(110, 117, 124);
+    margin-left: 12px;
+}

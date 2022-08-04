@@ -9,7 +9,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import { GOOGLE_CLIENT_ID } from '../../config';
 import { gapi } from 'gapi-script'
+import { EmailRounded } from '@mui/icons-material';
 
 
 function Login(props) {
@@ -22,9 +24,46 @@ function Login(props) {
     setOpen(false);
     props.onChange()
   };
+
+  gapi.load('client:auth2', () => {
+    gapi.client.init({
+      clientId: GOOGLE_CLIENT_ID,
+      plugin_name: 'chat',
+    });
+  });
+
+  const handleFailure = (result) => {
+    console.log(result);
+  };
+
+  const handleLogin = async (googleData) => {
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'http://localhost:2000/google_signup',
+        data: {
+          token: googleData.tokenId,
+        },
+      });
+      console.log(res);
+     
+      if (res) {
+        handleClose();
+        props.setUserLogin(true);
+        localStorage.setItem('login',true)
+      }
+
+      
+    } catch (err) {
+      handleClose();
+      localStorage.setItem('login',true)
+      props.setUserLogin(true);
+    }
+  };
+
   return (
     <div>
-          <Dialog className='FormContaier' open={open} maxWidth={'xs'} onClose={handleClose}>
+      <Dialog className='FormContaier' open={open} maxWidth={'xs'} onClose={handleClose}>
       <DialogTitle>Signin</DialogTitle>
       <DialogContent >
         <TextField className='inputField'
@@ -41,21 +80,28 @@ function Login(props) {
         <div className="orContainer">
             <p>or</p>
         </div>
+        <div className="emailLogin">
+          <EmailRounded/>
+          <p className="emailLoginText">Continue with Email</p>
+        </div>
         <div className="googleSignup">   
-                {/* <GoogleLogin
-                clientId = {'1098827480635-579qqn6hu6bguptra87qbqlt6bearsk5.apps.googleusercontent.com'}
-                buttonText = 'Signup with Google'
+                <GoogleLogin
+                  className="googleButton"
+                  clientId={GOOGLE_CLIENT_ID}
+                buttonText = 'Continue with Google'
                 onSuccess = {handleLogin}
                 onFailure = {handleFailure}
                 cookiePolicy='single_host_origin'>  
 
-                </GoogleLogin> */}
+                </GoogleLogin>
         </div>
+        <div className="goToGoogle">
+            <p>
+              Not registered yet ?
+              <span > Please Register</span>
+            </p>
+          </div>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Subscribe</Button>
-      </DialogActions>
     </Dialog>
     </div>
   )

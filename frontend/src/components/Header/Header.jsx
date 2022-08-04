@@ -3,11 +3,35 @@ import {  ShoppingCartRounded } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Login from '../Login/Login'
 import Signup from '../Signup/SignupModal';
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useEffect } from 'react';
 function Header() {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseDropdown = () => {
+    setAnchorEl(null);
+  };
+ 
+
+  const handleLogout = () => {
+    localStorage.removeItem('login')
+    setUserLogin(false)
+  }
   let [userLogin, setUserLogin] = useState(false);
   const [showModal , setShowModal] = useState(false)
   const [showLoginModal , setShowLoginModal] = useState(false)
+
+
+  useEffect(() => {
+    if(localStorage.getItem('login')) {
+      setUserLogin(true)
+    }
+  },[userLogin])
 
   let handleClose = () => setShowModal(false)
   let handleCloseLogin = () => setShowLoginModal(false)  
@@ -44,15 +68,29 @@ function Header() {
           <div className="imgbox">
             <img
               className="profilePic"
+              onClick={handleClick}
               src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
               alt=""
             />
           </div>
           <h2 className="userName">Mohammed shuhaib</h2>
+          <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleCloseDropdown}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleCloseDropdown}>Profile</MenuItem>
+        <MenuItem onClick={handleCloseDropdown}>My account</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
         </div>
       )}
 
-      <div className="profileContainerSmall">
+      <div className="profileContainerSmall" onClick={() =>  setShowLoginModal(true)}>
         <div className="imgbox">
           <img
             className="profilePic"
@@ -62,9 +100,10 @@ function Header() {
         </div>
         <h2 className="userName">Mohammed shuhaib</h2>
       </div>
-     {showModal && <Signup onChange={handleClose} setUserLogin={setUserLogin}/> }
-     {showLoginModal && <Login onChange={handleCloseLogin} setUserLogin={setUserLogin}/> }
-    </header>
+      {showModal && <Signup onChange={handleClose} setUserLogin={setUserLogin}/> }
+      {showLoginModal && <Login onChange={handleCloseLogin}  setUserLogin={setUserLogin}/>  }
+    
+     </header>
   );
 }
 

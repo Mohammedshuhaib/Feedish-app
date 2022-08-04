@@ -1,112 +1,145 @@
-import React, { useState,useEffect } from 'react'
-import './Signup.css'
+import React, { useState, useEffect } from 'react';
+import './Signup.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import GoogleLogin from 'react-google-login'
-import { useCookies } from 'react-cookie'
-import axios from 'axios'
-import { gapi } from 'gapi-script'
-import{ GOOGLE_CLIENT_ID } from '../../config'
+import GoogleLogin from 'react-google-login';
+import axios from 'axios';
+import { gapi } from 'gapi-script';
+import { GOOGLE_CLIENT_ID } from '../../config';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '../../validationschema/SignupSchema';
 
 function Signup(props) {
-  gapi.load("client:auth2", () => {
+
+
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const submitForm = (data) => {
+    console.log(data)
+  }
+
+
+  gapi.load('client:auth2', () => {
     gapi.client.init({
-      clientId:
-        GOOGLE_CLIENT_ID,
-      plugin_name: "chat",
+      clientId: GOOGLE_CLIENT_ID,
+      plugin_name: 'chat',
     });
   });
-  const [cookies, setCookies] = useCookies()
   const [open, setOpen] = React.useState(true);
-  const [signupData , setSignupData] = useState(
-      cookies.signupData ? cookies.signupData : null
-  )
   const handleClose = () => {
     setOpen(false);
-    props.onChange()
+    props.onChange();
   };
 
-    const handleFailure= (result) => {
-        console.log(result)
-    }
+  const handleFailure = (result) => {
+    console.log(result);
+  };
 
-    const handleLogin = async (googleData) => {
-       const res = await axios({
-        method:'post',
-        url:'http://localhost:2000/google_signup',
-        data:{
-            token:googleData.tokenId
-        }
-       })
-       console.log(res)
-       setSignupData(res)
-       if(res) {
-        handleClose()
-       }
-       setCookies('signupData',res, {path:'/'})
-    }
+  const handleLogin = async (googleData) => {
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'http://localhost:2000/google_signup',
+        data: {
+          token: googleData.tokenId,
+        },
+      });
+     
+      if (res) {
+        handleClose();
+        props.setUserLogin(true);
+        localStorage.setItem('login',true)
+      }
 
-    // useEffect(() => {
-    //   if(cookies.signupData) {
-        
-    //   }
-    // },[])
+      
+    } catch (err) {
+      handleClose();
+      localStorage.setItem('login',true)
+      props.setUserLogin(true);
+    }
+  };
+
   return (
     <div>
-    <Dialog className='FormContaier' open={open} maxWidth={'xs'} onClose={handleClose}>
-      <DialogTitle>Signup</DialogTitle>
-      <DialogContent >
-      <TextField className='inputField'
-       id="outlined-multiline-flexible"
-       maxRows={4}
-          label="Name"
-          type="text"
-          fullWidth
-          mt={4}
-        />
-        <TextField className='inputField'
-         id="outlined-multiline-flexible"
-        maxRows={4}
-          margin="dense"
-          label="Phone number"
-          type="number"
-          fullWidth
-        />
-        <TextField className='inputField'
-         id="outlined-multiline-flexible"
-        maxRows={4}
-          margin="dense"
-          label="Email"
-          type="email"
-          fullWidth
-        />
-        <div className="signupButton">
-        <Button variant='contained'>Send one time password</Button>
-        </div>
-        <div className="orContainer">
+      <Dialog
+        className="FormContaier"
+        open={open}
+        maxWidth={'xs'}
+        onClose={handleClose}
+      >
+        <DialogTitle>Signup</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <TextField
+              className="inputField"
+              id="outlined-multiline-flexible"
+              maxRows={4}
+              label="Name"
+              type="text"
+              name="Name"
+              fullWidth
+              mt={4}
+              {...register('Name')}
+            />
+            <p className='errorMessage'>{formState.errors.Name?.message}</p>
+            <TextField
+              className="inputField"
+              id="outlined-multiline-flexible"
+              maxRows={4}
+              margin="dense"
+              label="Phone number"
+              name="MobileNumber"
+              type="number"
+              fullWidth
+              {...register('MobileNumber')}
+            />
+            <p className='errorMessage'>{formState.errors.MobileNumber?.message}</p>
+            <TextField
+              className="inputField"
+              id="outlined-multiline-flexible"
+              maxRows={4}
+              margin="dense"
+              label="Email"
+              name="Email"
+              type="email"
+              fullWidth
+              {...register('Email')}
+            />
+            <p className='errorMessage'>{formState.errors.Email?.message}</p>
+            <div className="signupButton">
+              <Button type='submit' variant="contained">Send one time password</Button>
+            </div>
+          </form>
+
+          <div className="orContainer">
             <p>or</p>
-        </div>
-        <div className="googleSignup">   
-                <GoogleLogin
-                clientId = {GOOGLE_CLIENT_ID}
-                buttonText = 'Signup with Google'
-                onSuccess = {handleLogin}
-                onFailure = {handleFailure}
-                cookiePolicy='single_host_origin'>  
-                </GoogleLogin>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Subscribe</Button>
-      </DialogActions>
-    </Dialog>
-  </div>
-  )
+          </div>
+          <div className="googleSignup">
+            <GoogleLogin
+              className="googleButton"
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Signup with Google"
+              onSuccess={handleLogin}
+              onFailure={handleFailure}
+              cookiePolicy="single_host_origin"
+            ></GoogleLogin>
+          </div>
+          <div className="goToGoogle">
+            <p>
+              Already have an account ?
+              <span > Please login</span>
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
 
-export default Signup
+export default Signup;

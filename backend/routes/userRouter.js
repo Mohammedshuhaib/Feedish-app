@@ -1,36 +1,11 @@
 const express = require('express')
-const { OAuth2Client } = require('google-auth-library')
 const router = express.Router()
-const dotenv = require('dotenv')
-const User = require('../models/userModel')
+const userController = require('../controller/user')
 
-dotenv.config()
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
-router.get('/', (req, res) => {
-  console.log('iam in landing patge')
-})
+router.post('/google_signup', userController.GoogleSignup)
 
-let users = []
+router.post('/signup', userController.Signup)
 
-router.post('/google_signup', async (req, res) => {
-  try {
-    const { token } = req.body
-
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID
-    })
-    const { name, email, picture } = ticket.getPayload()
-    users = { name, email, picture }
-    await User.create({ ...users })
-
-    res.status(201)
-
-    res.json({ name, email, picture, userLogin: true })
-  } catch (err) {
-    res.status(200)
-    res.json({ userLogin: true })
-  }
-})
+router.post('/submitOtp', userController.Verifyotp)
 
 module.exports = router

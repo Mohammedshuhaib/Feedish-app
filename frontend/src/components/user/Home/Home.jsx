@@ -8,7 +8,7 @@ function Home() {
       <div className="mainContainer">
         <div className="bannerContainer">
           <img
-            src={require('../../images/Banner.jpg')}
+            src={require('../../../images/Banner.jpg')}
             className="banner"
             alt=""
           />

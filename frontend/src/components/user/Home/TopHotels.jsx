@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Autoplay, Pagination, Navigation } from "swiper";
+import { Autoplay, Pagination } from "swiper";
 
 function TopHotels() {
   return (
@@ -47,7 +47,7 @@ function TopHotels() {
               <div className='image-content'>
                 <span className='overlay'></span>
                 <div className='card-image'>
-                  <img src={require("../../images/Hotel1.jpg")} alt="" />
+                  <img src={require("../../../images/Hotel1.jpg")} alt="" />
                 </div>
               </div>
               <div className="card-content">
@@ -62,7 +62,7 @@ function TopHotels() {
               <div className='image-content'>
                 <span className='overlay'></span>
                 <div className='card-image'>
-                  <img src={require("../../images/Hotel2.jpg")} alt="" />
+                  <img src={require("../../../images/Hotel2.jpg")} alt="" />
                 </div>
               </div>
               <div className="card-content">
@@ -77,7 +77,7 @@ function TopHotels() {
               <div className='image-content'>
                 <span className='overlay'></span>
                 <div className='card-image'>
-                  <img src={require("../../images/Hotel2.jpg")} alt="" />
+                  <img src={require("../../../images/Hotel2.jpg")} alt="" />
                 </div>
               </div>
               <div className="card-content">

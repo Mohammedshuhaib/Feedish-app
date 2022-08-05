@@ -1,25 +1,21 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState } from 'react'
 import './Login.css'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login'
-import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import { GOOGLE_CLIENT_ID } from '../../config';
+import { GOOGLE_CLIENT_ID } from '../../../config';
 import { gapi } from 'gapi-script'
 import { EmailRounded } from '@mui/icons-material';
 
 
 function Login(props) {
-  const [cookies, setCookies] = useCookies()
+
   const [open, setOpen] = React.useState(true);
-  const [signupData , setSignupData] = useState(
-      cookies.signupData ? cookies.signupData : null
-  )
+
   const handleClose = () => {
     setOpen(false);
     props.onChange()

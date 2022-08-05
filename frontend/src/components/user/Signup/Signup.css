@@ -50,3 +50,26 @@
     font-size: 15px;
     color: red;
 }
+
+/* otp container */
+
+.otpTimer{
+    margin-top: 10px;
+    border: none;
+    outline: none;
+
+}
+
+.resentOtpContainer{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
+}
+.submitOtp{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './Signup.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -8,22 +8,51 @@ import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 import { gapi } from 'gapi-script';
-import { GOOGLE_CLIENT_ID } from '../../config';
+import { GOOGLE_CLIENT_ID, SERVER_URL } from '../../../config';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '../../validationschema/SignupSchema';
+import { schema } from '../../../validationschema/SignupSchema';
+import OtpModal from '../OtpModal/OtpModal';
 
 function Signup(props) {
-
+  const [open, setOpen] = React.useState(true);
+  const [err, setErr] = React.useState('')
+  const [openOtpModal, setOtpModal] = React.useState(false)
+  const [verificationData, setVerificationData] = React.useState('')
 
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(schema),
   });
+  const handleClose = () => {
+    setOpen(false);
+    props.onChange();
+  };
 
-  const submitForm = (data) => {
-    console.log(data)
-  }
+  const submitForm = async (data,e) => {
+    setVerificationData(data)
+    e.preventDefault()
+    try {
+      await axios({
+        url: `${SERVER_URL}/signup`,
+        method: 'post',
+        data: {
+          data,
+        },
+ 
+      });
+      
+      
+      setOtpModal(true)
+      // handleClose()
 
+    } catch (err) {
+      setErr('Please enter a valid Mobile number')
+    }
+  };
+
+  // handle close otp modal
+
+   let handleCloseOtpModal = () => setOtpModal(false)
 
   gapi.load('client:auth2', () => {
     gapi.client.init({
@@ -31,11 +60,8 @@ function Signup(props) {
       plugin_name: 'chat',
     });
   });
-  const [open, setOpen] = React.useState(true);
-  const handleClose = () => {
-    setOpen(false);
-    props.onChange();
-  };
+
+  
 
   const handleFailure = (result) => {
     console.log(result);
@@ -50,21 +76,18 @@ function Signup(props) {
           token: googleData.tokenId,
         },
       });
-     
+
       if (res) {
         handleClose();
         props.setUserLogin(true);
-        localStorage.setItem('login',true)
+        localStorage.setItem('login', true);
       }
-
-      
     } catch (err) {
       handleClose();
-      localStorage.setItem('login',true)
+      localStorage.setItem('login', true);
       props.setUserLogin(true);
     }
   };
-
   return (
     <div>
       <Dialog
@@ -87,7 +110,7 @@ function Signup(props) {
               mt={4}
               {...register('Name')}
             />
-            <p className='errorMessage'>{formState.errors.Name?.message}</p>
+            <p className="errorMessage">{formState.errors.Name?.message}</p>
             <TextField
               className="inputField"
               id="outlined-multiline-flexible"
@@ -99,7 +122,10 @@ function Signup(props) {
               fullWidth
               {...register('MobileNumber')}
             />
-            <p className='errorMessage'>{formState.errors.MobileNumber?.message}</p>
+            <p className="errorMessage">
+              {formState.errors.MobileNumber?.message}
+            </p>
+            <p className='erroMessage'>{err ? err : ''}</p>
             <TextField
               className="inputField"
               id="outlined-multiline-flexible"
@@ -111,9 +137,11 @@ function Signup(props) {
               fullWidth
               {...register('Email')}
             />
-            <p className='errorMessage'>{formState.errors.Email?.message}</p>
+            <p className="errorMessage">{formState.errors.Email?.message}</p>
             <div className="signupButton">
-              <Button type='submit' variant="contained">Send one time password</Button>
+              <Button type="submit" variant="contained">
+                Send one time password
+              </Button>
             </div>
           </form>
 
@@ -132,12 +160,14 @@ function Signup(props) {
           </div>
           <div className="goToGoogle">
             <p>
-              Already have an account ?
-              <span > Please login</span>
+              Already have an account ?<span> Please login</span>
             </p>
           </div>
         </DialogContent>
+        
       </Dialog>
+      {openOtpModal && <OtpModal data={verificationData} onAction={handleCloseOtpModal}/>}
+      
     </div>
   );
 }

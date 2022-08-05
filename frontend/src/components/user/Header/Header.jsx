@@ -6,10 +6,28 @@ import Signup from '../Signup/SignupModal';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux'
+import { setLogin } from '../../../stores/UserStore/UserLogin'
+import { useSelector } from 'react-redux'
 function Header() {
-
+  const dispatch = useDispatch()
+  let userLogin = useSelector((state) => state.userLogin.value)
+  // let [userLogin, setUserLogin] = useState(false);
+  const [showModal , setShowModal] = useState(false)
+  const [showLoginModal , setShowLoginModal] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+
+  useEffect(() => {
+    if(userLogin.length === 0) {
+      if(localStorage.getItem('login')) {
+        dispatch(setLogin({login:true}))
+    }
+    
+    }
+  },[userLogin.login])
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -22,19 +40,10 @@ function Header() {
     localStorage.removeItem('login')
     setUserLogin(false)
   }
-  let [userLogin, setUserLogin] = useState(false);
-  const [showModal , setShowModal] = useState(false)
-  const [showLoginModal , setShowLoginModal] = useState(false)
-
-
-  useEffect(() => {
-    if(localStorage.getItem('login')) {
-      setUserLogin(true)
-    }
-  },[userLogin])
 
   let handleClose = () => setShowModal(false)
   let handleCloseLogin = () => setShowLoginModal(false)  
+  
   return (
     <header>
       <img
@@ -70,7 +79,7 @@ function Header() {
               className="profilePic"
               onClick={handleClick}
               src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
-              alt=""
+              alt="Profile"
             />
           </div>
           <h2 className="userName">Mohammed shuhaib</h2>
@@ -90,7 +99,7 @@ function Header() {
         </div>
       )}
 
-      <div className="profileContainerSmall" onClick={() =>  setShowLoginModal(true)}>
+      <div className="profileContainerSmall" onClick={() => userLogin ? handleClick() :setShowLoginModal(true)}>
         <div className="imgbox">
           <img
             className="profilePic"

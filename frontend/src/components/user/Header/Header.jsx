@@ -7,12 +7,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-import { setLogin } from '../../../stores/UserStore/UserLogin'
+import { setLogin } from '../../../features/UserStore/UserLogin'
 import { useSelector } from 'react-redux'
 function Header() {
   const dispatch = useDispatch()
-  let userLogin = useSelector((state) => state.userLogin.value)
-  // let [userLogin, setUserLogin] = useState(false);
+  let userLogin = useSelector((state) => state.login.value)
   const [showModal , setShowModal] = useState(false)
   const [showLoginModal , setShowLoginModal] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,11 +21,11 @@ function Header() {
   useEffect(() => {
     if(userLogin.length === 0) {
       if(localStorage.getItem('login')) {
-        dispatch(setLogin({login:true}))
+        dispatch(setLogin(true))
     }
     
     }
-  },[userLogin.login])
+  },[dispatch, userLogin])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,7 +37,7 @@ function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem('login')
-    setUserLogin(false)
+    dispatch(setLogin(false))
   }
 
   let handleClose = () => setShowModal(false)
@@ -109,8 +108,8 @@ function Header() {
         </div>
         <h2 className="userName">Mohammed shuhaib</h2>
       </div>
-      {showModal && <Signup onChange={handleClose} setUserLogin={setUserLogin}/> }
-      {showLoginModal && <Login onChange={handleCloseLogin}  setUserLogin={setUserLogin}/>  }
+      {showModal && <Signup onChange={handleClose}/> }
+      {showLoginModal && <Login onChange={handleCloseLogin}/>  }
     
      </header>
   );

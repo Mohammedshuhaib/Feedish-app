@@ -7,9 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login'
 import axios from 'axios'
-import { GOOGLE_CLIENT_ID } from '../../../config';
 import { gapi } from 'gapi-script'
 import { EmailRounded } from '@mui/icons-material';
+import { GOOGLE_CLIENT_ID, SERVER_URL } from '../../../config/config';
 
 
 function Login(props) {
@@ -36,7 +36,7 @@ function Login(props) {
     try {
       const res = await axios({
         method: 'post',
-        url: 'http://localhost:2000/google_signup',
+        url: `${SERVER_URL}/google_signup`,
         data: {
           token: googleData.tokenId,
         },

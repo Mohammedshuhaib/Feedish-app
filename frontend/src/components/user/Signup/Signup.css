@@ -46,6 +46,11 @@
     color: red;
 }
 
+.errorContainer{
+    display: flex;
+    justify-content: center;
+}
+
 .errorMessage {
     font-size: 15px;
     color: red;

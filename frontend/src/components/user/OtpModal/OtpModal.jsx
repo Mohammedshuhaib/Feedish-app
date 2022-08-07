@@ -5,9 +5,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { Button } from '@mui/material';
 import axios from 'axios';
-import { SERVER_URL } from '../../../config';
+import { SERVER_URL } from '../../../config/config';
+import { setLogin } from '../../../features/UserStore/UserLogin';
+import { useDispatch } from 'react-redux'
 
 function OtpModal(props) {
+  let dispatch = useDispatch
   const [open, setOpen] = React.useState(true);
   const [OTP, setOTP] = useState("");
   const [err, setErr] = useState('')
@@ -36,10 +39,26 @@ function OtpModal(props) {
           data:props.data
         }
       })
+      dispatch(setLogin(true))
       handleClose()
+      props.onChange()
     }catch(err) {
-      setErr('Invalid otp')
+      console.log('hello')
+      setErr(err.response.data.message)
     }
+  }
+
+  const resendOtp = async() => {
+    try{
+      await axios({
+        method:'post',
+        url:`${SERVER_URL}/resendOtp`,
+        data:{data:props.data.MobileNumber},
+      })
+    }catch(err) {
+     console.log(err) 
+    }
+
   }
   return (
     <div>
@@ -53,10 +72,13 @@ function OtpModal(props) {
         <DialogContent>
         <OTPInput value={OTP} onChange={setOTP}  tabIndex="0" autoFocus OTPLength={6} otpType="any" disabled={false}  />
         <div className='resentOtpContainer'>
-        <ResendOTP className='resentOtpButton' renderButton={renderButton} renderTime={renderTime} onResendClick={() => console.log("Resend clicked")} />
+        <ResendOTP className='resentOtpButton' renderButton={renderButton} renderTime={renderTime} onResendClick={resendOtp} />
+        </div>
+        <div className="errorContainer">
+        <p className='errorMessage'>{err}</p>
         </div>
         <div className='submitOtp'>
-          <p className='errorMessage'>{err}</p>
+          
           <Button variant={'contained'} onClick={submitOtp} color={'success'}>Verify</Button>
         </div>
        

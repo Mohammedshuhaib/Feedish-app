@@ -8,13 +8,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 import { gapi } from 'gapi-script';
-import { GOOGLE_CLIENT_ID, SERVER_URL } from '../../../config';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../../validationschema/SignupSchema';
 import OtpModal from '../OtpModal/OtpModal';
+import {setLogin} from '../../../features/UserStore/UserLogin'
+import { useDispatch } from 'react-redux';
+import { GOOGLE_CLIENT_ID, SERVER_URL } from '../../../config/config';
+
 
 function Signup(props) {
+  let dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const [err, setErr] = React.useState('')
   const [openOtpModal, setOtpModal] = React.useState(false)
@@ -40,13 +44,11 @@ function Signup(props) {
         },
  
       });
-      
-      
       setOtpModal(true)
       // handleClose()
 
     } catch (err) {
-      setErr('Please enter a valid Mobile number')
+      setErr(err.response.data.message)
     }
   };
 
@@ -66,12 +68,13 @@ function Signup(props) {
   const handleFailure = (result) => {
     console.log(result);
   };
+// google signup handler  
 
   const handleLogin = async (googleData) => {
     try {
       const res = await axios({
         method: 'post',
-        url: 'http://localhost:2000/google_signup',
+        url: `${SERVER_URL}/google_signup`,
         data: {
           token: googleData.tokenId,
         },
@@ -79,13 +82,13 @@ function Signup(props) {
 
       if (res) {
         handleClose();
-        props.setUserLogin(true);
         localStorage.setItem('login', true);
+        dispatch(setLogin(true))
       }
     } catch (err) {
       handleClose();
       localStorage.setItem('login', true);
-      props.setUserLogin(true);
+      dispatch(setLogin(true))
     }
   };
   return (
@@ -125,7 +128,7 @@ function Signup(props) {
             <p className="errorMessage">
               {formState.errors.MobileNumber?.message}
             </p>
-            <p className='erroMessage'>{err ? err : ''}</p>
+           
             <TextField
               className="inputField"
               id="outlined-multiline-flexible"
@@ -138,6 +141,9 @@ function Signup(props) {
               {...register('Email')}
             />
             <p className="errorMessage">{formState.errors.Email?.message}</p>
+            <div className="errorContainer">
+            <p className='errorMessage'>{err ? err : ''}</p>
+            </div>
             <div className="signupButton">
               <Button type="submit" variant="contained">
                 Send one time password
@@ -166,7 +172,7 @@ function Signup(props) {
         </DialogContent>
         
       </Dialog>
-      {openOtpModal && <OtpModal data={verificationData} onAction={handleCloseOtpModal}/>}
+      {openOtpModal && <OtpModal onChange={handleClose} data={verificationData} onAction={handleCloseOtpModal}/>}
       
     </div>
   );

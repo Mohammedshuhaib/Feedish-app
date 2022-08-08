@@ -10,4 +10,8 @@ router.post('/submitOtp', userController.Verifyotp)
 
 router.post('/resendOtp', userController.ResendOtp)
 
+router.post('/loginMobile', userController.LoginWithMobile)
+
+router.post('/submitLoginOtp', userController.verifyLoginOtp)
+
 module.exports = router

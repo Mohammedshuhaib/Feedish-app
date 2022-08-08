@@ -1,9 +1,16 @@
 .emailLogin{
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 5px;
-    border-style: outset;
-    margin-bottom: 3px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+    height: 40px;
+    cursor: pointer;
+}
+.emailLogin:hover{
+
+    transform:scaleZ(-1);
 }
 
 .emailLogin .emailLoginText {

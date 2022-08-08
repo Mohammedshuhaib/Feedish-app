@@ -43,7 +43,7 @@ function Signup(props) {
           data,
         },
  
-      });
+      },{withCredentials:true});
       setOtpModal(true)
       // handleClose()
 

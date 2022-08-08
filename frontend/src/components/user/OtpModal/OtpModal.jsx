@@ -10,7 +10,7 @@ import { setLogin } from '../../../features/UserStore/UserLogin';
 import { useDispatch } from 'react-redux'
 
 function OtpModal(props) {
-  let dispatch = useDispatch
+  let dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const [OTP, setOTP] = useState("");
   const [err, setErr] = useState('')
@@ -25,13 +25,13 @@ function OtpModal(props) {
       <button className='otpTimer' {...buttonProps}>
         {buttonProps.remainingTime !== 0 ? `Please wait for ${buttonProps.remainingTime} sec` : "Resend"}
       </button>
-    );
+    ); 
   };
   const renderTime = () => React.Fragment;
 
   const submitOtp = async() => {
     try{
-      await axios({
+     await axios({
         url:`${SERVER_URL}/submitOtp`,
         method:'post',
         data:{
@@ -39,11 +39,28 @@ function OtpModal(props) {
           data:props.data
         }
       })
-      dispatch(setLogin(true))
       handleClose()
       props.onChange()
+      dispatch(setLogin(true))
     }catch(err) {
-      console.log('hello')
+      setErr(err.response.data.message)
+    }
+  }
+
+  const submitLoginOtp = async() => {
+    try{
+     await axios({
+        url:`${SERVER_URL}/submitLoginOtp`,
+        method:'post',
+        data:{
+          OTP,
+          data:props.number
+        }
+      })
+      handleClose()
+      props.onChange()
+      dispatch(setLogin(true))
+    }catch(err) {
       setErr(err.response.data.message)
     }
   }
@@ -79,7 +96,7 @@ function OtpModal(props) {
         </div>
         <div className='submitOtp'>
           
-          <Button variant={'contained'} onClick={submitOtp} color={'success'}>Verify</Button>
+          <Button variant={'contained'} onClick={props.data ? submitOtp : submitLoginOtp} color={'success'}>Verify</Button>
         </div>
        
         </DialogContent>

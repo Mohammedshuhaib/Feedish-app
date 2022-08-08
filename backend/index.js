@@ -2,6 +2,7 @@ const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
 const db = require('./db/connection')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const userRouter = require('./routes/userRouter')
@@ -10,6 +11,7 @@ const corsOptions = {
   origin: 'http://localhost:3000'
 }
 
+app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

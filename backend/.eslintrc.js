@@ -18,5 +18,6 @@ module.exports = {
     'react'
   ],
   rules: {
+    quotes: ['error', 'single']
   }
 }

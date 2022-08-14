@@ -8,7 +8,8 @@ const app = express()
 const userRouter = require('./routes/userRouter')
 
 const corsOptions = {
-  origin: 'http://localhost:3000'
+  origin: 'http://localhost:3000',
+  credentials: true
 }
 
 app.use(cookieParser())

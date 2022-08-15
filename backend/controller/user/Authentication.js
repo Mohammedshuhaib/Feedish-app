@@ -101,7 +101,7 @@ module.exports = {
     if (user === null) {
       return next(createError(401, 'user not exists'))
     } else {
-      // await sendOtp(mobileNumber)
+      await sendOtp(mobileNumber)
       res.status(200)
       res.json({ status: 'ok' })
     }
@@ -109,8 +109,7 @@ module.exports = {
 
   verifyLoginOtp: asyncHandler(async (req, res, next) => {
     const { OTP, data } = req.body
-    // const response = await verifyOtp(data, OTP)
-    const response = 'approved'
+    const response = await verifyOtp(data, OTP)
     if (response === 'approved') {
       const user = await User.findOne({ mobileNumber: data })
       const users = { name: user.Name }
@@ -131,19 +130,30 @@ module.exports = {
       const { email } = req.body
       const user = await User.findOne({ email })
       if (user) {
-        const response = await sendOtpEmail(email)
-        res.cookie('otpcode', response, { httpOnly: true })
-        res.status(200).json('success')
+        const response = await sendOtpEmail(email, user.name)
+        res.cookie('otpcode', response, { maxAge: 100000, httpOnly: true })
+        return res.status(200).json('success')
       } else {
         return next(createError(404, 'no user'))
       }
     } catch (err) {
+      console.log(err)
       return next(createError(500, 'server error'))
     }
   }),
 
   verifyEmailOtp: asyncHandler(async (req, res, next) => {
-    console.log(req.cookies)
+    const { otpcode } = req.cookies
+    const { OTP } = req.body
+    if (otpcode) {
+      if (otpcode === OTP) {
+        return res.status(200).json('successfully login')
+      } else {
+        return next(createError(401, 'otp dosnt match'))
+      }
+    } else {
+      return next(createError(403, 'otp Expired'))
+    }
   })
 
   // login end

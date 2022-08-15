@@ -12,8 +12,10 @@ const corsOptions = {
   credentials: true
 }
 
-app.use(cookieParser())
+
 app.use(cors(corsOptions))
+app.options('*', cors({ origin: true, credentials: true }))
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', userRouter)

@@ -50,6 +50,9 @@ function Header() {
         alt=""
         className="logo"
       />
+      <div className="restaurantButton">
+          <Button onClick={() => setShowLoginModal(true)} color='error'>Add restaurant</Button>
+        </div>
        
         <div className="shoppingCart">
           <ShoppingCartRounded className="cart" />
@@ -58,10 +61,10 @@ function Header() {
           </div>
         </div>
       
-
+        
       {userLogin === false && (
         <div className="loginButton">
-          <Button onClick={() => setShowLoginModal(true)} variant="contained">Login</Button>
+          <Button onClick={() => setShowLoginModal(true)} variant="outlined">Login</Button>
         </div>
       )}
       {userLogin === false && (

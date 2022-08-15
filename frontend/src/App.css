@@ -109,6 +109,12 @@ header {
   .signupButton {
 
   }
+
+  .restaurantButton{
+    margin-left: 15px;
+    outline: none;
+  }
+
   .profileContainerSmall{
     display: none;
   }
@@ -361,7 +367,7 @@ main .mainContainer .bannerContainer .banner {
 main .mainContainer .bannerContainer .bannerSlogan {
   position: absolute;
   z-index: 102px;
-  top: 30%;
+  top: 20%;
   width: 100%;
   text-align: center;
   font-size: 18px;
@@ -371,10 +377,12 @@ main .mainContainer .bannerContainer .bannerSlogan .mainSlogan{
     color: #292D32;
     font-size: 50px;
     font-family: 'Bree Serif', serif;
+    margin-bottom: 0px;
 }
 
 .bannerSlogan .subSlogan {
   color: #4E1C1C;
+  margin-top: 0px;
 }
 
 main .mainContainer .bannerContainer .searchLocation {
@@ -384,7 +392,7 @@ main .mainContainer .bannerContainer .searchLocation {
     display: flex;
     position: absolute;
     align-items: center;
-    top: 60%;
+    top: 50%;
     overflow: hidden;
     padding: 8px 15px;
     width: 100%;
@@ -576,6 +584,12 @@ main .mainContainer .bannerContainer .searchLocation .minimal {
 
   .card-content button:hover {
     background-color: #4E1C1C;
+  }
+
+
+  input::-webkit-inner-spin-button,
+  imput::-webkit-outer-spin-button {
+    -webkit-appearance: none;
   }
 
 

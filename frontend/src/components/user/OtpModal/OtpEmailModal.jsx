@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux'
 
 function OtpModal(props) {
   let dispatch = useDispatch()
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true); 
   const [OTP, setOTP] = useState("");
   const [err, setErr] = useState('')
 
@@ -32,36 +32,22 @@ function OtpModal(props) {
   const submitOtp = async() => {
     try{
      await axios({
-        url:`${SERVER_URL}/submitOtp`,
+        url:`${SERVER_URL}/submitEmailOtp`,
         method:'post',
         data:{
           OTP,
-          data:props.data
-        }
-      },{withCredentials:true})
-      handleClose()
-      props.onChange()
-      dispatch(setLogin(true))
-    }catch(err) {
-      setErr(err.response.data.message)
-    }
-  }
-
-  const submitLoginOtp = async() => {
-    try{
-     await axios({
-        url:`${SERVER_URL}/submitLoginOtp`,
-        method:'post',
-        data:{
-          OTP,
-          data:props.number
-        }
+        },
+        withCredentials: true
       })
       handleClose()
       props.onChange()
       dispatch(setLogin(true))
     }catch(err) {
-      setErr(err.response.data.message)
+      if(err.response.status === 401) {
+        setErr('otp doesnt match')
+      }else if( err.response.status === 403) {
+        setErr('otp expired please resend')
+      }
     }
   }
 
@@ -69,9 +55,9 @@ function OtpModal(props) {
     try{
       await axios({
         method:'post',
-        url:`${SERVER_URL}/resendOtp`,
-        data:{data: props.data ? props.data.MobileNumber : props.number},
-      })
+        url:`${SERVER_URL}/resendEmailOtp`,
+        data:{data: props.email},
+      },{withCredentials:true})
     }catch(err) {
      console.log(err) 
     }
@@ -96,7 +82,7 @@ function OtpModal(props) {
         </div>
         <div className='submitOtp'>
           
-          <Button variant={'contained'} onClick={props.data ? submitOtp : submitLoginOtp} color={'success'}>Verify</Button>
+          <Button variant={'contained'} onClick={submitOtp} color={'success'}>Verify</Button>
         </div>
        
         </DialogContent>

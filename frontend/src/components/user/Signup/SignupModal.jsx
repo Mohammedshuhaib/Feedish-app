@@ -166,7 +166,7 @@ function Signup(props) {
           </div>
           <div className="goToGoogle">
             <p>
-              Already have an account ?<span> Please login</span>
+              Already have an account ?<span onClick={props.onAction}> Please login</span>
             </p>
           </div>
         </DialogContent>

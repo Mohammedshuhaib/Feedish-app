@@ -12,7 +12,6 @@ const corsOptions = {
   credentials: true
 }
 
-
 app.use(cors(corsOptions))
 app.options('*', cors({ origin: true, credentials: true }))
 app.use(cookieParser())

@@ -111,9 +111,21 @@ header {
   }
 
   .restaurantButton{
-    margin-left: 15px;
+    margin-right: 20px;
     outline: none;
   }
+
+  .restaurantButton Button {
+    outline: none;
+    background-color: #f54c56;
+    color: white;
+
+  }
+  
+  .restaurantButton Button:hover {
+    color: black;
+
+  } 
 
   .profileContainerSmall{
     display: none;
@@ -407,7 +419,7 @@ main .mainContainer .bannerContainer .searchLocation input{
     background-color: white;
 }
 
-main .mainContainer .bannerContainer .searchLocation select{
+main .mainContainer .bannerContainer .searchLocation .minimal{
     width: 50%;
     justify-content: space-between;
     outline: none;

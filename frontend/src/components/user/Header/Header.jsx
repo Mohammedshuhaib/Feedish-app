@@ -9,12 +9,19 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { setLogin } from '../../../features/UserStore/UserLogin'
 import { useSelector } from 'react-redux'
+import Avatar from '@mui/material/Avatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import Settings from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
 function Header() {
   const dispatch = useDispatch()
   let userLogin = useSelector((state) => state.login.value)
   const [showModal , setShowModal] = useState(false)
   const [showLoginModal , setShowLoginModal] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [ changeModal, setChangeModal ] = useState(false)
   const open = Boolean(anchorEl);
 
 
@@ -27,6 +34,13 @@ function Header() {
     }
   },[dispatch, userLogin])
 
+  const setChangeFalse = () => {setChangeModal(false)
+  setShowLoginModal(true)}
+
+  const setChangeTrue = () => {
+    setChangeModal(true)
+    setShowModal(true)
+  }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,9 +64,7 @@ function Header() {
         alt=""
         className="logo"
       />
-      <div className="restaurantButton">
-          <Button onClick={() => setShowLoginModal(true)} color='error'>Add restaurant</Button>
-        </div>
+     
        
         <div className="shoppingCart">
           <ShoppingCartRounded className="cart" />
@@ -60,16 +72,20 @@ function Header() {
             <p>2</p>
           </div>
         </div>
-      
+        <div className="restaurantButton">
+          <Button color='error'>Add restaurant</Button>
+        </div>
         
       {userLogin === false && (
         <div className="loginButton">
-          <Button onClick={() => setShowLoginModal(true)} variant="outlined">Login</Button>
+          <Button onClick={() => {setShowLoginModal(true)
+          setChangeModal(false)}} variant="outlined">Login</Button>
         </div>
       )}
       {userLogin === false && (
         <div className="signupButton">
-          <Button onClick={() => setShowModal(true)} variant="contained" color="success">
+          <Button onClick={() => {setShowModal(true)
+          setChangeModal(true)}} variant="contained" color="success">
             Signup
           </Button>
         </div>
@@ -86,18 +102,67 @@ function Header() {
           </div>
           <h2 className="userName">Mohammed shuhaib</h2>
           <Menu
-        id="basic-menu"
         anchorEl={anchorEl}
+        id="account-menu"
         open={open}
         onClose={handleCloseDropdown}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
+        onClick={handleCloseDropdown}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
         }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleCloseDropdown}>Profile</MenuItem>
-        <MenuItem onClick={handleCloseDropdown}>My account</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem>
+          <Avatar /> Profile
+        </MenuItem>
+        <MenuItem>
+          <Avatar /> My account
+        </MenuItem>
+        <Divider />
+        <MenuItem>
+          <ListItemIcon>
+            <PersonAdd fontSize="small" />
+          </ListItemIcon>
+          Add another account
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          Settings
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
       </Menu>
+
         </div>
       )}
 
@@ -111,9 +176,7 @@ function Header() {
         </div>
         <h2 className="userName">Mohammed shuhaib</h2>
       </div>
-      {showModal && <Signup onChange={handleClose}/> }
-      {showLoginModal && <Login onChange={handleCloseLogin}/>  }
-    
+      { changeModal ? showModal && <Signup onAction={setChangeFalse} onChange={handleClose}/> : showLoginModal && <Login onAction={setChangeTrue} onChange={handleCloseLogin}/>  }
      </header>
   );
 }

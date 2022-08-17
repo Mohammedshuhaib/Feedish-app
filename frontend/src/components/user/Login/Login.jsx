@@ -185,7 +185,7 @@ function Login(props) {
           </div>
           <div className="goToGoogle">
             <p>
-              Not registered yet ?<span> Please Register</span>
+              Not registered yet ?<span onClick={props.onAction}> Please Register</span>
             </p>
           </div>
         </DialogContent>

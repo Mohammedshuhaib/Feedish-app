@@ -1,0 +1,16 @@
+.loginOuterPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginOuterPage .loginPageContainer {
+    background-color: #fff;
+
+}
+
+.loginOuterPage .loginPageContainer .forgotPassword {
+    color: blue;
+}
+

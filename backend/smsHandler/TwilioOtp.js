@@ -21,7 +21,7 @@ module.exports = {
     client.verify.v2.services(process.env.TWILIO_SERVIECE_ID)
       .verificationChecks
       .create({ to: `+91${Mobilenumber}`, code: otp })
-      .then(verification_check => resolve(verification_check.status))
+      .then(verification_check => resolve(verification_check.approved))
       .catch((err) => reject(err))
   })
 

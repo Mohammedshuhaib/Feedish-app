@@ -142,6 +142,10 @@ header {
   .profileContainer{
     display: none;
   }
+  .restaurantButton {
+    display :none;
+  }
+  
   
 .profileContainerSmall {
   display: flex;

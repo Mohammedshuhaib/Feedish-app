@@ -30,37 +30,48 @@ function OtpModal(props) {
   const renderTime = () => React.Fragment;
 
   const submitOtp = async() => {
-    try{
-     await axios({
-        url:`${SERVER_URL}/submitEmailOtp`,
-        method:'post',
-        data:{
-          OTP,
-        },
-        withCredentials: true
-      })
-      handleClose()
-      props.onChange()
-      dispatch(setLogin(true))
-    }catch(err) {
-      if(err.response.status === 401) {
-        setErr('otp doesnt match')
-      }else if( err.response.status === 403) {
-        setErr('otp expired please resend')
-      }
+    if(!OTP) {
+      setErr('Cannot left empty')
+    }else {
+      try{
+        await axios({
+           url:`${SERVER_URL}/submitEmailOtp`,
+           method:'post',
+           data:{
+             OTP,
+             email:props.email
+           },
+           withCredentials: true
+         })
+         handleClose()
+         props.onChange()
+         dispatch(setLogin(true))
+       }catch(err) {
+         if(err.response.status === 401) {
+           setErr('otp doesnt match')
+         }else if( err.response.status === 403) {
+           setErr('otp expired please resend')
+         }
+       }
     }
+   
   }
 
   const resendOtp = async() => {
-    try{
-      await axios({
-        method:'post',
-        url:`${SERVER_URL}/resendEmailOtp`,
-        data:{data: props.email},
-      },{withCredentials:true})
-    }catch(err) {
-     console.log(err) 
+    if(!OTP) {
+      setErr('Cannot left empty')
+    }else {
+      try{
+        await axios({
+          method:'post',
+          url:`${SERVER_URL}/resendEmailOtp `,
+          data:{email: props.email},
+        },{withCredentials:true})
+      }catch(err) {
+       console.log(err) 
+      }
     }
+   
 
   }
   return (

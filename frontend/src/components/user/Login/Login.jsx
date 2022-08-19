@@ -20,7 +20,11 @@ function Login(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [openOtpModal, setOtpModal] = React.useState(false)
   const [openOtpEmailModal, setOtpEmailModal] = React.useState(false)
-  const [err, setErr] = useState("");
+  const [err, setErr] = useState("")
+
+  let emailValidation = new RegExp(
+    '^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'
+ );
 
   const handleClose = () => {
     setOpen(false);
@@ -42,27 +46,36 @@ function Login(props) {
   };
 
   const handleLogin = async (googleData) => {
-    try {
-      const res = await axios({
-        method: "post",
-        url: `${SERVER_URL}/google_signup`,
-        data: {
-          token: googleData.tokenId,
-        },
-      });
+    
+      try {
+        const res = await axios({
+          method: "post",
+          url: `${SERVER_URL}/google_signup`,
+          data: {
+            token: googleData.tokenId,
+          },
+        });
+          handleClose();
+          props.setUserLogin(true);
+          localStorage.setItem("login", true);
+      } catch (err) {
+        console.log(err)
         handleClose();
-        props.setUserLogin(true);
         localStorage.setItem("login", true);
-    } catch (err) {
-      console.log(err)
-      handleClose();
-      localStorage.setItem("login", true);
-      props.setUserLogin(true);
-    }
+        props.setUserLogin(true);
+      } 
+    
   };
 
   const submitEmail = async() => {
-    try{
+    if(!emailValidation.test(email)) {
+      setErr('Invalid email address')
+      return
+   }else if(!email){
+    setErr('Email cannot be empty')
+   }else{
+     setErr('')
+     try{
       await axios({
         url: `${SERVER_URL}/sendEmailOtp`,
         data:{
@@ -81,11 +94,19 @@ function Login(props) {
       }else {
         setErr('')
       }
-    }
+  }
+   }
+     
+    
    
   };
 
   const submitMobile = async () => {
+    if(!mobileNumber) {
+      setErr('Mobile number is required')
+      return
+    } else {
+      setErr('')
     try {
       await axios({
         method: "post",
@@ -100,6 +121,7 @@ function Login(props) {
         setErr("Mobile number not exists please register");
       }
     }
+  }
   };
 
   return (
@@ -121,7 +143,9 @@ function Login(props) {
               label="Phone number"
               type="number"
               value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
+              onChange={(e) => {
+                setErr('')
+                setMobileNumber(e.target.value)}}
               fullWidth
             />
           )}
@@ -134,7 +158,12 @@ function Login(props) {
               label="Email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setErr('')
+                setEmail(e.target.value)
+              }
+            }
+                
               fullWidth
             />
           )}
@@ -191,7 +220,7 @@ function Login(props) {
         </DialogContent>
       </Dialog>
       {openOtpModal && <OtpModal onChange={handleClose} number={mobileNumber} onAction={handleCloseOtpModal}/>}
-      {openOtpEmailModal && <OtpEmailModal onChange={handleClose} number={email} onAction={handleCloseEmailOtpModal}/>}
+      {openOtpEmailModal && <OtpEmailModal onChange={handleClose} email={email} onAction={handleCloseEmailOtpModal}/>}
     </div>
   );
 }

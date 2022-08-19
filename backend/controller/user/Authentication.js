@@ -25,10 +25,11 @@ module.exports = {
       const accessToken = generateAccessToken(name)
       const refreshToken = jwt.sign(name, process.env.REFRESH_TOKEN_SECRET)
       users = { name, email, picture, refreshToken }
-      await User.create({ ...users })
-
+      const data = await User.create({ ...users })
+      res.cookie('accessToken', accessToken, { maxAge: 6000, httpOnly: true })
+      res.cookie('refreshToken', refreshToken, { httpOnly: true })
+      res.cookie('uerId', data._id, { httpOnly: true })
       res.status(201)
-
       res.json({ name, email, picture, userLogin: true })
     } catch (err) {
       res.status(200)
@@ -41,7 +42,7 @@ module.exports = {
   //  Singup start
 
   Signup: asyncHandler(async (req, res, next) => {
-    const { data } = req.body
+    const data = req.body
     const user = await User.findOne({
       $or: [{ email: data.Email }, { mobileNumber: data.MobileNumber }]
     })
@@ -101,7 +102,7 @@ module.exports = {
     if (user === null) {
       return next(createError(401, 'user not exists'))
     } else {
-      // await sendOtp(mobileNumber)
+      await sendOtp(mobileNumber)
       res.status(200)
       res.json({ status: 'ok' })
     }
@@ -109,14 +110,14 @@ module.exports = {
 
   verifyLoginOtp: asyncHandler(async (req, res, next) => {
     const { OTP, data } = req.body
-    // const response = await verifyOtp(data, OTP)
-    const response = 'approved'
+    const response = await verifyOtp(data, OTP)
+    // const response = 'approved'
     if (response === 'approved') {
       const user = await User.findOne({ mobileNumber: data })
       const users = { name: user.Name }
       const accessToken = generateAccessToken(users)
       const refreshToken = jwt.sign(users, process.env.REFRESH_TOKEN_SECRET)
-      await User.updateOne({ _id: user._id }, { $set: { name: refreshToken } })
+      await User.updateOne({ _id: user._id }, { $set: { refreshToken } })
       res.cookie('accessToken', accessToken, { maxAge: 6000, httpOnly: true })
       res.cookie('refreshToken', refreshToken, { httpOnly: true })
       res.cookie('uerId', user._id, { httpOnly: true })
@@ -145,9 +146,17 @@ module.exports = {
 
   verifyEmailOtp: asyncHandler(async (req, res, next) => {
     const { otpcode } = req.cookies
-    const { OTP } = req.body
+    const { OTP, email } = req.body
     if (otpcode) {
       if (otpcode === OTP) {
+        const user = await User.findOne({ email })
+        const users = { name: user.Name }
+        const accessToken = generateAccessToken(users)
+        const refreshToken = jwt.sign(users, process.env.REFRESH_TOKEN_SECRET)
+        await User.updateOne({ _id: user._id }, { $set: { refreshToken } })
+        res.cookie('accessToken', accessToken, { maxAge: 6000, httpOnly: true })
+        res.cookie('refreshToken', refreshToken, { httpOnly: true })
+        res.cookie('uerId', user._id, { httpOnly: true })
         return res.status(200).json('successfully login')
       } else {
         return next(createError(401, 'otp dosnt match'))
@@ -155,6 +164,13 @@ module.exports = {
     } else {
       return next(createError(403, 'otp Expired'))
     }
+  }),
+
+  ResendEmailOtp: asyncHandler(async (req, res, next) => {
+    const { email } = req.body
+    const data = User.findOne(email)
+    await sendOtpEmail(email, data.name)
+    res.status(200).json('success')
   })
 
   // login end

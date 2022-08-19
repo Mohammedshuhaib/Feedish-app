@@ -21,4 +21,6 @@ router.post('/sendEmailOtp', userController.LoginWithEmail)
 
 router.post('/submitEmailOtp', userController.verifyEmailOtp)
 
+router.post('/resendEmailOtp', userController.ResendEmailOtp)
+
 module.exports = router

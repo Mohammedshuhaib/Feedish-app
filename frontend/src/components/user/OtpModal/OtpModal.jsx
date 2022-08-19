@@ -30,51 +30,66 @@ function OtpModal(props) {
   const renderTime = () => React.Fragment;
 
   const submitOtp = async() => {
-    try{
-     await axios({
-        url:`${SERVER_URL}/submitOtp`,
-        method:'post',
-        data:{
-          OTP,
-          data:props.data
-        }
-      },{withCredentials:true})
-      handleClose()
-      props.onChange()
-      dispatch(setLogin(true))
-    }catch(err) {
-      setErr(err.response.data.message)
+    if(!OTP) {
+      setErr('Cannot left empty')
+    } else {
+      try{
+        await axios({
+           url:`${SERVER_URL}/submitOtp`,
+           method:'post',
+           data:{
+             OTP,
+             data:props.data
+           }
+         },{withCredentials:true})
+         handleClose()
+         props.onChange()
+         dispatch(setLogin(true))
+       }catch(err) {
+         setErr(err.response.data.message)
+       }
     }
+   
   }
 
   const submitLoginOtp = async() => {
-    try{
-     await axios({
-        url:`${SERVER_URL}/submitLoginOtp`,
-        method:'post',
-        data:{
-          OTP,
-          data:props.number
-        }
-      })
-      handleClose()
-      props.onChange()
-      dispatch(setLogin(true))
-    }catch(err) {
-      setErr(err.response.data.message)
+    if(!OTP) {
+      setErr('Cannot left empty')
+    }else {
+      try{
+        await axios({
+           url:`${SERVER_URL}/submitLoginOtp`,
+           method:'post',
+           data:{
+             OTP,
+             data:props.number
+           }
+         })
+         handleClose()
+         props.onChange()
+         dispatch(setLogin(true))
+       }catch(err) {
+         setErr(err.response.data.message)
+       }
     }
+   
   }
 
   const resendOtp = async() => {
-    try{
-      await axios({
-        method:'post',
-        url:`${SERVER_URL}/resendOtp`,
-        data:{data: props.data ? props.data.MobileNumber : props.number},
-      })
-    }catch(err) {
-     console.log(err) 
+    if(!OTP) {
+      setErr('Cannot left empty')
+    }else {
+      try{
+        await axios({
+          method:'post',
+          url:`${SERVER_URL}/resendOtp`,
+          data:{data: props.data ? props.data.MobileNumber : props.number},
+        })
+      }catch(err) {
+       console.log(err) 
+      }
     }
+   
 
   }
   return (

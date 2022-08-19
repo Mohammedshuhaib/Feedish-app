@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 
 const app = express()
 const userRouter = require('./routes/userRouter')
+const adminRouter = require('./routes/adminRoute')
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -18,6 +19,7 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/', userRouter)
+app.use('/admin', adminRouter)
 
 db.on('error', console.error.bind(console, 'Mongodb connection failed'))
 

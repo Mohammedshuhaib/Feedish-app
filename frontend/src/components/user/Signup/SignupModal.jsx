@@ -40,7 +40,9 @@ function Signup(props) {
         url: `${SERVER_URL}/signup`,
         method: 'post',
         data: {
-          data,
+          Email:data.Email,
+          MobileNumber:data.MobileNumber,
+          Name:data.Name
         },
  
       },{withCredentials:true});

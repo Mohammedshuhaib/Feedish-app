@@ -61,8 +61,8 @@ module.exports = {
 
   Verifyotp: asyncHandler(async (req, res, next) => {
     const { OTP, data } = req.body
-    console.log(data)
     const response = await verifyOtp(data.MobileNumber, OTP)
+    console.log('--------------------twilio response--------------------', response)
     if (response === 'approved') {
       const user = { name: data.Name }
       const accessToken = generateAccessToken(user)

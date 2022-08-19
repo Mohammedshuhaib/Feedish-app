@@ -6,7 +6,7 @@ const client = require('twilio')(accountSid, authToken)
 
 module.exports = {
 
-  sendOtp: (Mobilenumber) => new Promise(async (resolve, reject) => {
+  sendOtp: (Mobilenumber) => new Promise((resolve, reject) => {
     try {
       const verification = client.verify.v2.services(process.env.TWILIO_SERVIECE_ID)
         .verifications
@@ -17,11 +17,11 @@ module.exports = {
     }
   }),
 
-  verifyOtp: (Mobilenumber, otp) => new Promise(async (resolve, reject) => {
+  verifyOtp: (Mobilenumber, otp) => new Promise((resolve, reject) => {
     client.verify.v2.services(process.env.TWILIO_SERVIECE_ID)
       .verificationChecks
       .create({ to: `+91${Mobilenumber}`, code: otp })
-      .then(verification_check => resolve(verification_check.approved))
+      .then(verification_check => resolve(verification_check.status))
       .catch((err) => reject(err))
   })
 

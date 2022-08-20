@@ -2,6 +2,7 @@ import React from 'react'
 import './AdminHome.scss'
 import Chart from './chart/Chart'
 import Featured from './featured/Featured'
+import Table from './table/Table'
 import Widget from './widget/Widget'
 function AdminHome() {
   return (
@@ -15,6 +16,10 @@ function AdminHome() {
     <div className="charts">
       <Featured/>
       <Chart/>
+    </div>
+    <div className="listContainer">
+      <div className="listTitle">Latest Trasnsactions</div>
+      <Table/>
     </div>
     </>
     

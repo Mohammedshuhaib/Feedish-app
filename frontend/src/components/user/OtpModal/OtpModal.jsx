@@ -6,11 +6,8 @@ import OTPInput, { ResendOTP } from "otp-input-react";
 import { Button } from '@mui/material';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config/config';
-import { setLogin } from '../../../features/UserStore/UserLogin';
-import { useDispatch } from 'react-redux'
 
 function OtpModal(props) {
-  let dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const [OTP, setOTP] = useState("");
   const [err, setErr] = useState('')
@@ -44,9 +41,13 @@ function OtpModal(props) {
          },{withCredentials:true})
          handleClose()
          props.onChange()
-         dispatch(setLogin(true))
+         localStorage.setItem('login', true);
        }catch(err) {
-         setErr(err.response.data.message)
+         if(err.response.status === 401) {
+          setErr('Invalid Otp')
+         }else{
+          setErr('Your otp expired or check your connection')
+         }
        }
     }
    
@@ -67,9 +68,13 @@ function OtpModal(props) {
          })
          handleClose()
          props.onChange()
-         dispatch(setLogin(true))
+         localStorage.setItem('login', true);
        }catch(err) {
-         setErr(err.response.data.message)
+        if(err.response.status === 401) {
+          setErr('Invalid Otp')
+         }else{
+          setErr('Your otp expired or check your connection')
+         }
        }
     }
    
@@ -86,7 +91,7 @@ function OtpModal(props) {
           data:{data: props.data ? props.data.MobileNumber : props.number},
         })
       }catch(err) {
-       console.log(err) 
+       setErr('Network error')
       }
     }
    

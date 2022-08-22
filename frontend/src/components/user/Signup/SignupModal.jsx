@@ -12,13 +12,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../../validationschema/SignupSchema';
 import OtpModal from '../OtpModal/OtpModal';
-import {setLogin} from '../../../features/UserStore/UserLogin'
-import { useDispatch } from 'react-redux';
 import { GOOGLE_CLIENT_ID, SERVER_URL } from '../../../config/config';
 
 
 function Signup(props) {
-  let dispatch = useDispatch()
   const [open, setOpen] = React.useState(true);
   const [err, setErr] = React.useState('')
   const [openOtpModal, setOtpModal] = React.useState(false)
@@ -50,7 +47,11 @@ function Signup(props) {
       // handleClose()
 
     } catch (err) {
-      setErr(err.response.data.message)
+      if(err.response.status === 409) {
+        setErr('Email address or Mobile number already exist')
+      }else{
+        setErr('Network error')
+      }
     }
   };
 
@@ -64,12 +65,10 @@ function Signup(props) {
       plugin_name: 'chat',
     });
   });
-
-  
-
   const handleFailure = (result) => {
-    console.log(result);
+   setErr('Some error occure')
   };
+
 // google signup handler  
 
   const handleLogin = async (googleData) => {
@@ -85,12 +84,10 @@ function Signup(props) {
       if (res) {
         handleClose();
         localStorage.setItem('login', true);
-        dispatch(setLogin(true))
       }
     } catch (err) {
       handleClose();
       localStorage.setItem('login', true);
-      dispatch(setLogin(true))
     }
   };
   return (

@@ -6,11 +6,8 @@ import OTPInput, { ResendOTP } from "otp-input-react";
 import { Button } from '@mui/material';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config/config';
-import { setLogin } from '../../../features/UserStore/UserLogin';
-import { useDispatch } from 'react-redux'
 
 function OtpModal(props) {
-  let dispatch = useDispatch()
   const [open, setOpen] = React.useState(true); 
   const [OTP, setOTP] = useState("");
   const [err, setErr] = useState('')
@@ -45,7 +42,7 @@ function OtpModal(props) {
          })
          handleClose()
          props.onChange()
-         dispatch(setLogin(true))
+         localStorage.setItem('login', true);
        }catch(err) {
          if(err.response.status === 401) {
            setErr('otp doesnt match')
@@ -68,7 +65,7 @@ function OtpModal(props) {
           data:{email: props.email},
         },{withCredentials:true})
       }catch(err) {
-       console.log(err) 
+       setErr('Network error')
       }
     }
    

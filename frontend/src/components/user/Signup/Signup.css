@@ -3,6 +3,13 @@
 .FormContaier .inputField {
     margin-top: 10px;
     width: 400px;
+    
+}
+
+@media (max-width:508px) {
+    .FormContaier .inputField {
+        width: 250px !important;
+    }
 }
 
 .FormContaier .signupButton {

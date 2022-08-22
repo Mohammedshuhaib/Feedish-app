@@ -31,6 +31,12 @@ header {
   width: 50px;
 }
 
+.lastPart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .shoppingCart {
   position: relative;
   width: 30px;
@@ -38,7 +44,7 @@ header {
   display: flex;
   justify-content: center;
   margin-left: auto;
-  margin-right:15px ;
+  margin-right:8px ;
 }
 
 .shoppingCart .cart {
@@ -100,7 +106,7 @@ header {
 
 @media  (min-width: 902px) {
   .shoppingCart {
-    margin-right: 50px;
+    margin-right: 20px;
   }
   .loginButton{
 
@@ -142,9 +148,9 @@ header {
   .profileContainer{
     display: none;
   }
-  .restaurantButton {
+  /* .restaurantButton {
     display :none;
-  }
+  } */
   
   
 .profileContainerSmall {
@@ -349,8 +355,10 @@ main .mainContainer .bannerContainer {
 
   main .mainContainer .bannerContainer .bannerSlogan .mainSlogan {
     font-size: 90px !important;
+ 
   }
   .bannerSlogan .subSlogan {
+  
     font-size: 30px;
   }
 
@@ -394,6 +402,7 @@ main .mainContainer .bannerContainer .bannerSlogan .mainSlogan{
     font-size: 50px;
     font-family: 'Bree Serif', serif;
     margin-bottom: 0px;
+    margin-top: -1px;
 }
 
 .bannerSlogan .subSlogan {
@@ -408,7 +417,7 @@ main .mainContainer .bannerContainer .searchLocation {
     display: flex;
     position: absolute;
     align-items: center;
-    top: 50%;
+    top: 45%;
     overflow: hidden;
     padding: 8px 15px;
     width: 100%;

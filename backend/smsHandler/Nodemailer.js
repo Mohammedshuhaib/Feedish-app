@@ -16,8 +16,8 @@ module.exports = {
     const clindOtpCode = {
       from: process.env.NODEMAILER_USER, // sender address
       to: email, // list of receivers
-      subject: 'LiveDrive Email Varification', // Subject line
-      text: `Hello ${name},Your livedrive verification code is ${otpCode}`
+      subject: 'Feedish Email Varification', // Subject line
+      text: `Hello ${name},Your feedish app verification code is ${otpCode}`
     }
     transporter.sendMail(clindOtpCode, (error, info) => {
       if (error) reject(error)

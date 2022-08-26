@@ -18,7 +18,7 @@ header {
   justify-content: space-between;
   padding: 5px 15px;
   width: 100%;
-  background-color: #fff;
+  background-color: transparent;
   position: fixed;
   top: 0;
   left: 0;
@@ -123,8 +123,7 @@ header {
 
   .restaurantButton Button {
     outline: none;
-    background-color: #f54c56;
-    color: white;
+    color: rgb(20, 0, 0);
 
   }
   
@@ -331,8 +330,7 @@ header {
 
 main {
   width: 100%;
-  height: auto;
-  margin-top: 60px;
+  height: auto; 
 }
 main .mainContainer {
   position: relative;

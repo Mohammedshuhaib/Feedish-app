@@ -1,7 +1,9 @@
 import { AccountBoxOutlined, Dashboard, GroupOutlined, ListOutlined, LogoutOutlined, NotificationsActiveOutlined, SettingsOutlined, Store } from "@mui/icons-material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './Sidebar.scss'
 function Sidebar() {
+  let navigate = useNavigate()
   return (
     <div className="sidebar">
       <div className="top"><span className="logo">logo</span></div>
@@ -9,7 +11,7 @@ function Sidebar() {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <li>
+          <li  onClick={() => navigate('/admin/adminHome')}>
             <Dashboard className='icon'/>
             <span>Dashbord</span>
           </li>
@@ -21,7 +23,7 @@ function Sidebar() {
             <ListOutlined className='icon'/>
             <span>Order</span>
           </li>
-          <li>
+          <li onClick={() => navigate('/admin/users')}>
             <GroupOutlined className='icon'/>
             <span>Users</span>
           </li>

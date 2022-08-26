@@ -81,7 +81,7 @@ function OtpModal(props) {
       >
          <DialogTitle>Enter otp</DialogTitle>
         <DialogContent>
-        <OTPInput value={OTP} onChange={setOTP}  tabIndex="0" autoFocus OTPLength={6} otpType="any" disabled={false}  />
+        <OTPInput value={OTP} onChange={setOTP}  tabIndex="0" autoFocus OTPLength={4} otpType="any" disabled={false}  />
         <div className='resentOtpContainer'>
         <ResendOTP className='resentOtpButton' renderButton={renderButton} renderTime={renderTime} onResendClick={resendOtp} />
         </div>

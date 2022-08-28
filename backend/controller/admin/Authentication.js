@@ -8,9 +8,9 @@ const jwt = require('jsonwebtoken')
 module.exports = {
 
   adminLogin: (expressAsyncHandler(async (req, res, next) => {
-    const admin = await Admin.findOne({ email: req.body.Email })
+    const admin = await Admin.findOne({ email: req.body.email })
     if (admin) {
-      const response = await bcrypt.compare(req.body.Password, admin.password)
+      const response = await bcrypt.compare(req.body.password, admin.password)
       if (response) {
         const email = { email: admin.email }
         const accessToken = generateAccessToken(email)

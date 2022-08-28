@@ -3,24 +3,24 @@ const router = express.Router()
 const userController = require('../controller/user/Authentication')
 const Authorization = require('../controller/user/Authorization')
 
-router.post('/google_signup', userController.GoogleSignup)
+router.post('/google-signup', userController.googleSignup)
 
-router.post('/signup', userController.Signup)
+router.post('/signup', userController.signup)
 
-router.post('/submitOtp', userController.Verifyotp)
+router.post('/submit-otp', userController.verifyOtp)
 
-router.post('/resendOtp', userController.ResendOtp)
+router.post('/resend-otp', userController.resendOtp)
 
-router.post('/loginMobile', userController.LoginWithMobile)
+router.post('/login-mobile', userController.loginWithMobile)
 
-router.post('/submitLoginOtp', userController.verifyLoginOtp)
+router.post('/submit-loginotp', userController.verifyLoginOtp)
 
-router.post('/token', Authorization.Token)
+router.post('/token', Authorization.token)
 
-router.post('/sendEmailOtp', userController.LoginWithEmail)
+router.post('/send-emailotp', userController.loginWithEmail)
 
-router.post('/submitEmailOtp', userController.verifyEmailOtp)
+router.post('/submit-emailotp', userController.verifyEmailOtp)
 
-router.post('/resendEmailOtp', userController.ResendEmailOtp)
+router.post('/resend-emailotp', userController.resendEmailOtp)
 
 module.exports = router

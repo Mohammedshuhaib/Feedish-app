@@ -3,7 +3,7 @@ const { eventNames } = require('../models/userModel')
 
 module.exports = {
   sendOtpEmail: async (email, name) => new Promise(async (resolve, reject) => {
-    const otpCode = Math.floor(100000 + Math.random() * 900000)
+    const otpCode = Math.floor(1000 + Math.random() * 9000)
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {

@@ -13,7 +13,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 module.exports = {
   // google signup start
 
-  GoogleSignup: async (req, res) => {
+  googleSignup: async (req, res) => {
     try {
       const { token } = req.body
       const ticket = await client.verifyIdToken({
@@ -41,17 +41,18 @@ module.exports = {
 
   //  Singup start
 
-  Signup: asyncHandler(async (req, res, next) => {
+  signup: asyncHandler(async (req, res, next) => {
+    console.log(req.body)
     const data = req.body
     const user = await User.findOne({
-      $or: [{ email: data.Email }, { mobileNumber: data.MobileNumber }]
+      $or: [{ email: data.email }, { mobileNumber: data.mobileNumber }]
     })
     if (user) {
       return next(
         createError(409, 'Email address or Mobile number are already exist')
       )
     } else {
-      await sendOtp(data.MobileNumber)
+      await sendOtp(data.mobileNumber)
       res.status(200)
       res.json({ status: 'ok' })
     }
@@ -59,18 +60,18 @@ module.exports = {
 
   // verify otp
 
-  Verifyotp: asyncHandler(async (req, res, next) => {
-    const { OTP, data } = req.body
-    const response = await verifyOtp(data.MobileNumber, OTP)
+  verifyOtp: asyncHandler(async (req, res, next) => {
+    const { otp, data } = req.body
+    const response = await verifyOtp(data.mobileNumber, otp)
     console.log('--------------------twilio response--------------------', response)
     if (response === 'approved') {
-      const user = { name: data.Name }
+      const user = { name: data.name }
       const accessToken = generateAccessToken(user)
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
       const resp = await User.create({
-        name: data.Name,
-        email: data.Email,
-        mobileNumber: data.MobileNumber,
+        name: data.name,
+        email: data.email,
+        mobileNumber: data.mobileNumber,
         refreshToken
       })
       res.cookie('accessToken', accessToken, { maxAge: 6000, httpOnly: true })
@@ -84,7 +85,7 @@ module.exports = {
 
   // resent otp
 
-  ResendOtp: asyncHandler(async (req, res, next) => {
+  resendOtp: asyncHandler(async (req, res, next) => {
     const { data } = req.body
     await sendOtp(data)
     res.status(200)
@@ -96,7 +97,7 @@ module.exports = {
 
   // login mobile number
 
-  LoginWithMobile: asyncHandler(async (req, res, next) => {
+  loginWithMobile: asyncHandler(async (req, res, next) => {
     const { mobileNumber } = req.body
     const user = await User.findOne({ mobileNumber })
     if (user === null) {
@@ -109,12 +110,12 @@ module.exports = {
   }),
 
   verifyLoginOtp: asyncHandler(async (req, res, next) => {
-    const { OTP, data } = req.body
-    const response = await verifyOtp(data, OTP)
+    const { otp, data } = req.body
+    const response = await verifyOtp(data, otp)
     // const response = 'approved'
     if (response === 'approved') {
       const user = await User.findOne({ mobileNumber: data })
-      const users = { name: user.Name }
+      const users = { name: user.name }
       const accessToken = generateAccessToken(users)
       const refreshToken = jwt.sign(users, process.env.REFRESH_TOKEN_SECRET)
       await User.updateOne({ _id: user._id }, { $set: { refreshToken } })
@@ -127,7 +128,7 @@ module.exports = {
     }
   }),
 
-  LoginWithEmail: asyncHandler(async (req, res, next) => {
+  loginWithEmail: asyncHandler(async (req, res, next) => {
     try {
       const { email } = req.body
       const user = await User.findOne({ email })
@@ -146,11 +147,11 @@ module.exports = {
 
   verifyEmailOtp: asyncHandler(async (req, res, next) => {
     const { otpcode } = req.cookies
-    const { OTP, email } = req.body
+    const { otp, email } = req.body
     if (otpcode) {
-      if (otpcode === OTP) {
+      if (otpcode === otp) {
         const user = await User.findOne({ email })
-        const users = { name: user.Name }
+        const users = { name: user.name }
         const accessToken = generateAccessToken(users)
         const refreshToken = jwt.sign(users, process.env.REFRESH_TOKEN_SECRET)
         await User.updateOne({ _id: user._id }, { $set: { refreshToken } })
@@ -166,7 +167,7 @@ module.exports = {
     }
   }),
 
-  ResendEmailOtp: asyncHandler(async (req, res, next) => {
+  resendEmailOtp: asyncHandler(async (req, res, next) => {
     const { email } = req.body
     const data = User.findOne(email)
     await sendOtpEmail(email, data.name)

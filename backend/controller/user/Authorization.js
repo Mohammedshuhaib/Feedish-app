@@ -6,7 +6,7 @@ const createError = require('../../createError')
 dotenv.config()
 module.exports = {
 
-  Token: expressAsyncHandler(async (req, res, next) => {
+  token: expressAsyncHandler(async (req, res, next) => {
     const { refreshToken, userId } = req.cookies
     if (!refreshToken) return next(createError(401, 'token not found'))
     const checkToken = await User.findOne({ _id: userId, refreshToken })
